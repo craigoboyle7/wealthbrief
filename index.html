@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pension Calculator — Wealth Brief UK</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7WQY7QB8JL"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-7WQY7QB8JL');
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body,html{background:#0a0a0a;min-height:100vh}
+.wrap{background:#0a0a0a;color:#fff;font-family:'DM Sans',sans-serif;padding:24px 20px;min-height:100vh;max-width:600px;margin:0 auto}
+.brand{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;color:#7B9BB5;margin-bottom:4px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,8vw,44px);letter-spacing:1px;color:#fff;line-height:1;margin-bottom:6px}
+.subtitle{font-size:clamp(13px,3.5vw,14px);color:#7B9BB5;margin-bottom:4px}
+.subtitle2{font-size:clamp(11px,3vw,12px);color:#444;margin-bottom:24px}
+.phase-tabs{display:flex;gap:2px;margin-bottom:20px;background:#111;border-radius:8px;padding:3px}
+.tab{flex:1;padding:11px 8px;text-align:center;font-size:clamp(11px,3vw,12px);font-weight:500;letter-spacing:1px;text-transform:uppercase;border-radius:6px;cursor:pointer;color:#666;transition:all .2s;font-family:'DM Sans',sans-serif}
+.tab.active{background:#1a1a1a;color:#fff;border:1px solid #333}
+.section{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:18px 16px;margin-bottom:14px}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1.5px;color:#7B9BB5;margin-bottom:14px}
+.field{margin-bottom:18px;position:relative}
+.field:last-child{margin-bottom:0}
+.field-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.field-label-wrap{display:flex;align-items:center;gap:6px}
+.field-label{font-size:clamp(11px,3vw,12px);color:#888;letter-spacing:0.3px;text-transform:uppercase}
+.field-value{font-size:clamp(14px,3.5vw,15px);font-weight:600;color:#fff}
+.info-btn{width:16px;height:16px;border-radius:50%;background:#1e1e1e;border:1px solid #333;color:#7B9BB5;font-size:10px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Sans',sans-serif;line-height:1;-webkit-tap-highlight-color:transparent;position:relative}
+.info-bubble{display:none;position:absolute;left:50%;transform:translateX(-50%);top:24px;background:#1a2530;border:1px solid #2a3f50;border-radius:6px;padding:10px 12px;font-size:12px;color:#aaa;line-height:1.5;z-index:10;width:220px;font-family:'DM Sans',sans-serif;text-transform:none;letter-spacing:0;font-weight:400}
+.info-bubble.show{display:block}
+input[type=range]{width:100%;height:4px;background:#2a2a2a;border-radius:2px;outline:none;-webkit-appearance:none;appearance:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#7B9BB5;cursor:pointer;border:2px solid #0a0a0a}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#7B9BB5;cursor:pointer;border:2px solid #0a0a0a}
+.landing{display:block}
+.calculator{display:none}
+.landing-wrap{background:#0a0a0a;color:#fff;font-family:'DM Sans',sans-serif;padding:32px 24px;min-height:100vh;max-width:600px;margin:0 auto;display:flex;flex-direction:column;justify-content:flex-start}
+.landing-brand{font-family:'Bebas Neue',sans-serif;font-size:49px;letter-spacing:1px;color:#7B9BB5;margin-bottom:6px}
+.landing-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(42px,10vw,64px);letter-spacing:1px;color:#fff;line-height:1;margin-bottom:10px}
+.landing-tagline{font-size:clamp(13px,3.2vw,15px);color:#fff;margin-bottom:24px;letter-spacing:0.3px}
+.landing-section-label{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:#333;margin-bottom:12px;margin-top:0}
+.tool-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:40px}
+.tool-card{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:20px;cursor:pointer;transition:border-color .2s;-webkit-tap-highlight-color:transparent}
+.tool-card:active{opacity:0.85}
+.tool-card:hover{border-color:#7B9BB5}
+.tool-card-eyebrow{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.tool-card-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(20px,5vw,26px);letter-spacing:0.5px;color:#fff;margin-bottom:4px}
+.tool-card-sub{font-size:12px;color:#555}
+.tool-card.primary{border-color:#2a3f50;background:#0f1419}
+.tool-card.primary .tool-card-title{color:#7B9BB5}
+.landing-divider{height:1px;background:#1a1a1a;margin-bottom:32px}
+.landing-signup{text-align:center;margin-bottom:48px}
+.landing-signup-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,6vw,28px);letter-spacing:1px;color:#fff;margin-bottom:6px}
+.landing-signup-sub{font-size:clamp(12px,3.5vw,13px);color:#555;margin-bottom:20px;line-height:1.6}
+.landing-signup-row{display:flex;flex-direction:column;gap:8px}
+.landing-signup-input{width:100%;background:#111;border:1px solid #2a2a2a;border-radius:6px;padding:14px;font-size:16px;color:#fff;font-family:'DM Sans',sans-serif;outline:none}
+.landing-signup-input::placeholder{color:#444}
+.landing-signup-input:focus{border-color:#7B9BB5}
+.landing-signup-btn{width:100%;padding:14px;background:#7B9BB5;color:#0a0a0a;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1.5px;border:none;border-radius:6px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.landing-signup-btn:active{opacity:0.85}
+.landing-signup-disclaimer{font-size:11px;color:#333;margin-top:10px}
+.landing-signup-success{display:none;font-size:14px;color:#7B9BB5;padding:12px 0}
+.back-btn{background:none;border:none;color:#7B9BB5;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;padding:0;margin-bottom:20px;display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+@media(min-width:480px){
+  .landing-signup-row{flex-direction:row}
+  .landing-signup-input{flex:1}
+  .landing-signup-btn{width:auto;padding:14px 20px}
+}
+.result-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.rcard{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:14px}
+.rcard.highlight{border-color:#7B9BB5;background:#0f1419}
+.rcard-label{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.rcard-value{font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,6vw,28px);letter-spacing:0.5px;color:#fff;line-height:1}
+.rcard-sub{font-size:10px;color:#7B9BB5;margin-top:3px}
+.rcard.highlight .rcard-value{color:#7B9BB5}
+.chart-wrap{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:18px 16px;margin-bottom:14px;position:relative}
+.chart-title{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.chart-crosshair{position:absolute;width:1px;background:#7B9BB5;opacity:0;pointer-events:none;transition:opacity .1s}
+.chart-tooltip{position:absolute;background:#1a2530;border:1px solid #2a3f50;border-radius:6px;padding:7px 10px;font-size:12px;color:#fff;pointer-events:none;opacity:0;transition:opacity .1s;white-space:nowrap;transform:translateX(-50%)}
+.chart-tooltip .tt-age{font-size:10px;color:#7B9BB5;margin-bottom:2px}
+.chart-tooltip .tt-val{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.5px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #1a1a1a}
+.toggle-row:first-child{border-top:none;padding-top:0}
+.toggle-label{font-size:clamp(13px,3.5vw,14px);color:#ccc}
+.toggle-sub{font-size:11px;color:#555;margin-top:2px}
+.toggle{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.slider-t{position:absolute;inset:0;background:#2a2a2a;border-radius:24px;cursor:pointer;transition:.2s}
+.slider-t:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:#555;border-radius:50%;transition:.2s}
+input:checked+.slider-t{background:#7B9BB5}
+input:checked+.slider-t:before{transform:translateX(20px);background:#fff}
+.insight{background:#0f1419;border:1px solid #1e2a35;border-radius:8px;padding:14px;margin-bottom:14px}
+.insight-text{font-size:clamp(12px,3.5vw,13px);color:#aaa;line-height:1.65}
+.insight-text strong{color:#7B9BB5}
+.phase-btn{width:100%;padding:16px;background:#7B9BB5;color:#0a0a0a;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;border:none;border-radius:8px;cursor:pointer;margin-top:4px;transition:opacity .2s;-webkit-tap-highlight-color:transparent}
+.phase-btn:active{opacity:0.85}
+.warning{background:#1a1100;border:1px solid #332200;border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;color:#cc9900;line-height:1.5}
+.custom-pot-field{margin-top:14px;padding-top:14px;border-top:1px solid #1a1a1a;display:none}
+.signup{background:#0f1419;border:1px solid #1e2a35;border-radius:10px;padding:22px 18px;margin-top:8px;text-align:center}
+.signup-eyebrow{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:#7B9BB5;margin-bottom:8px}
+.signup-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,6vw,26px);letter-spacing:1px;color:#fff;margin-bottom:8px;line-height:1.1}
+.signup-sub{font-size:clamp(12px,3.5vw,13px);color:#666;margin-bottom:18px;line-height:1.6}
+.signup-row{display:flex;flex-direction:column;gap:8px}
+.signup-input{width:100%;background:#111;border:1px solid #2a2a2a;border-radius:6px;padding:14px;font-size:16px;color:#fff;font-family:'DM Sans',sans-serif;outline:none}
+.signup-input::placeholder{color:#444}
+.signup-input:focus{border-color:#7B9BB5}
+.signup-btn{width:100%;padding:14px;background:#7B9BB5;color:#0a0a0a;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1.5px;border:none;border-radius:6px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.signup-btn:active{opacity:0.85}
+.signup-disclaimer{font-size:11px;color:#333;margin-top:12px}
+.signup-success{display:none;font-size:14px;color:#7B9BB5;padding:12px 0}
+@media(min-width:480px){
+  .signup-row{flex-direction:row}
+  .signup-input{flex:1}
+  .signup-btn{width:auto;padding:14px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- LANDING PAGE -->
+<div class="landing" id="landing">
+  <div class="landing-wrap">
+    <div class="landing-brand">WEALTH BRIEF UK</div>
+    <div class="landing-tagline">See your retirement in numbers.</div>
+
+    <div class="landing-section-label">FREE TOOLS</div>
+    <div class="tool-cards">
+      <div class="tool-card primary" onclick="goToCalculator(1)">
+        <div class="tool-card-eyebrow">Pension Calculator</div>
+        <div class="tool-card-title">How much will you have?</div>
+        <div class="tool-card-sub">Model your pot based on salary, contributions and growth</div>
+      </div>
+      <div class="tool-card" onclick="goToCalculator(2)">
+        <div class="tool-card-eyebrow">Pension Calculator</div>
+        <div class="tool-card-title">When will you run out?</div>
+        <div class="tool-card-sub">See how long your pot lasts in retirement</div>
+      </div>
+    </div>
+
+    <div class="landing-divider"></div>
+
+    <div class="landing-signup">
+      <div class="landing-signup-title">MORE TOOLS COMING SOON</div>
+      <div class="landing-signup-sub">ISA calculator. Tax optimiser. Salary sacrifice modeller.<br>Be first to know when they drop.</div>
+      <div id="landing-signup-row">
+        <form action="https://app.kit.com/forms/9314660/subscriptions" method="post" target="kit-frame-landing" onsubmit="handleLandingSignup()">
+          <div class="landing-signup-row">
+            <input class="landing-signup-input" type="email" name="email_address" id="landing-email-input" placeholder="your@email.com" required>
+            <button class="landing-signup-btn" type="submit">NOTIFY ME</button>
+          </div>
+        </form>
+        <iframe name="kit-frame-landing" style="display:none"></iframe>
+      </div>
+      <div class="landing-signup-success" id="landing-signup-success">You're on the list. Watch this space.</div>
+      <div class="landing-signup-disclaimer">No spam. Unsubscribe anytime.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<div class="calculator" id="calculator">
+<div class="wrap">
+  <button class="back-btn" onclick="goToLanding()">← Back to home</button>
+  <div class="brand">WEALTH BRIEF UK</div>
+  <h1>PENSION CALCULATOR</h1>
+  <div class="subtitle">Build your pot, then see how long it lasts.</div>
+  <div class="subtitle2">Select a phase below — use both for the full picture.</div>
+
+  <div class="phase-tabs">
+    <div class="tab active" id="tab1" onclick="showPhase(1)">BUILD IT</div>
+    <div class="tab" id="tab2" onclick="showPhase(2)">SPEND IT</div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div id="phase1">
+    <div class="section">
+      <div class="section-title">YOUR SITUATION</div>
+
+      <div class="field">
+        <div class="field-header">
+          <div class="field-label-wrap"><span class="field-label">Current age</span></div>
+          <span class="field-value" id="lv-age">32</span>
+        </div>
+        <input type="range" id="age" min="18" max="65" value="32" step="1" oninput="sync('age','lv-age','');calc()">
+      </div>
+
+      <div class="field">
+        <div class="field-header">
+          <div class="field-label-wrap"><span class="field-label">Retirement age</span></div>
+          <span class="field-value" id="lv-ret">65</span>
+        </div>
+        <input type="range" id="ret" min="30" max="75" value="65" step="1" oninput="sync('ret','lv-ret','');calc()">
+      </div>
+
+      <div class="field">
+        <div class="field-header">
+          <div class="field-label-wrap"><span class="field-label">Current salary</span></div>
+          <span class="field-value" id="lv-sal">£45,000</span>
+        </div>
+        <input type="range" id="sal" min="15000" max="200000" value="45000" step="1000" oninput="syncCurrency('sal','lv-sal');calc()">
+      </div>
+
+      <div class="field">
+        <div class="field-header">
+          <div class="field-label-wrap">
+            <span class="field-label">Salary growth rate</span>
+            <span class="info-btn" onclick="toggleInfo('info-sg')">i
+              <span class="info-bubble" id="info-sg">How much you expect your salary to grow each year. 2–3% is typical for most workers.</span>
+            </span>
+          </div>
+          <span class="field-value" id="lv-sg">2%</span>
+        </div>
+        <input type="range" id="sg" min="0" max="10" value="2" step="0.5" oninput="sync('sg','lv-sg','%');calc()">
+      </div>
+
+      <div class="field">
+        <div class="field-header">
+          <div class="field-label-wrap">
+            <span class="field-label">Existing pension pot</span>
+            <span class="info-btn" onclick="toggleInfo('info-pot')">i
+              <span class="info-bubble" id="info-pot">How much you currently have saved in your pension. Check your pension provider app or last annual statement.</span>
+            </span>
+          </div>
+          <span class="field-value" id="lv-pot">£10,000</span>
+        </div>
+        <input type="range" id="pot" min="0" max="5000000" value="10000" step="5000" oninput="syncCurrency('pot','lv-pot');calc()">
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">CONTRIBUTIONS</div>
+      <div class="row">
+        <div class="field">
+          <div class="field-header">
+            <div class="field-label-wrap"><span class="field-label">Your contribution</span></div>
+            <span class="field-value" id="lv-ec">5%</span>
+          </div>
+          <input type="range" id="ec" min="0" max="40" value="5" step="0.5" oninput="sync('ec','lv-ec','%');calc()">
+        </div>
+        <div class="field">
+          <div class="field-header">
+            <div class="field-label-wrap"><span class="field-label">Employer contribution</span></div>
+            <span class="field-value" id="lv-emp">3%</span>
+          </div>
+          <input type="range" id="emp" min="0" max="20" value="3" step="0.5" oninput="sync('emp','lv-emp','%');calc()">
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">GROWTH</div>
+      <div class="field">
+        <div class="field-header">
+          <div class="field-label-wrap">
+            <span class="field-label">Expected annual return</span>
+            <span class="info-btn" onclick="toggleInfo('info-gr')">i
+              <span class="info-bubble" id="info-gr">How much you expect your pension investments to grow each year.<br><br>3% = conservative<br>5% = moderate<br>7%+ = aggressive</span>
+            </span>
+          </div>
+          <span class="field-value" id="lv-gr">6%</span>
+        </div>
+        <input type="range" id="gr" min="1" max="15" value="6" step="0.5" oninput="sync('gr','lv-gr','%');calc()">
+      </div>
+    </div>
+
+    <div class="result-cards">
+      <div class="rcard highlight">
+        <div class="rcard-label">Projected pot</div>
+        <div class="rcard-value" id="r-pot">£0</div>
+        <div class="rcard-sub" id="r-years">0 years growth</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-label">You contribute</div>
+        <div class="rcard-value" id="r-cost">£0</div>
+        <div class="rcard-sub">per month</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-label">Employer adds</div>
+        <div class="rcard-value" id="r-employer">£0</div>
+        <div class="rcard-sub">per month</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-label">Total contributions</div>
+        <div class="rcard-value" id="r-contribs">£0</div>
+        <div class="rcard-sub">over your career</div>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">POT GROWTH OVER TIME</div>
+      <div style="position:relative;width:100%;height:200px" id="growth-container">
+        <canvas id="growthChart" role="img" aria-label="Pension pot growth over time">Pot growth projection.</canvas>
+        <div class="chart-crosshair" id="growth-crosshair"></div>
+        <div class="chart-tooltip" id="growth-tooltip">
+          <div class="tt-age" id="gtt-age"></div>
+          <div class="tt-val" id="gtt-val"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <div class="insight-text" id="insight-text1">Enter your details above to see your projection.</div>
+    </div>
+
+    <button class="phase-btn" onclick="showPhase(2)">SEE HOW LONG IT LASTS →</button>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div id="phase2" style="display:none">
+    <div class="section">
+      <div class="section-title">YOUR POT</div>
+      <div class="toggle-row" style="border-top:none;padding-top:0">
+        <div>
+          <div class="toggle-label">Adjust pot value</div>
+          <div class="toggle-sub">Set your own starting figure</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="custom-pot-toggle" onchange="toggleCustomPot()"><span class="slider-t"></span></label>
+      </div>
+      <div class="custom-pot-field" id="custom-pot-field">
+        <div class="field" style="margin-bottom:0">
+          <div class="field-header">
+            <div class="field-label-wrap"><span class="field-label">Pension pot</span></div>
+            <span class="field-value" id="lv-custpot">£100,000</span>
+          </div>
+          <input type="range" id="custpot" min="0" max="5000000" value="100000" step="5000" oninput="syncCurrency('custpot','lv-custpot');calc()">
+        </div>
+      </div>
+      <div id="calculated-pot-display" style="margin-top:12px;padding-top:12px;border-top:1px solid #1a1a1a;font-size:12px;color:#555">
+        Projected pot: <span id="r-projpot" style="color:#7B9BB5;font-weight:600">£0</span>
+      </div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Adjust retirement age</div>
+          <div class="toggle-sub">Override the projected retirement age</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="custom-ret-toggle" onchange="toggleCustomRet()"><span class="slider-t"></span></label>
+      </div>
+      <div class="custom-pot-field" id="custom-ret-field">
+        <div class="field" style="margin-bottom:0">
+          <div class="field-header">
+            <div class="field-label-wrap"><span class="field-label">Retirement age</span></div>
+            <span class="field-value" id="lv-custret">65</span>
+          </div>
+          <input type="range" id="custret" min="30" max="75" value="65" step="1" oninput="sync('custret','lv-custret','');calc()">
+        </div>
+      </div>
+      <div id="calculated-ret-display" style="margin-top:12px;padding-top:12px;border-top:1px solid #1a1a1a;font-size:12px;color:#555">
+        Projected retirement age: <span id="r-projret" style="color:#7B9BB5;font-weight:600">65</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">DRAWDOWN SETTINGS</div>
+      <div class="field">
+        <div class="field-header">
+          <div class="field-label-wrap">
+            <span class="field-label">Desired income in retirement</span>
+            <span class="info-btn" onclick="toggleInfo('info-draw')">i
+              <span class="info-bubble" id="info-draw">How much you want to take as your salary in retirement, before tax. Think about your expected monthly expenses and lifestyle.</span>
+            </span>
+          </div>
+          <span class="field-value" id="lv-draw">£30,000</span>
+        </div>
+        <input type="range" id="draw" min="5000" max="120000" value="30000" step="1000" oninput="syncCurrency('draw','lv-draw');calc()">
+      </div>
+      <div class="field">
+        <div class="field-header">
+          <div class="field-label-wrap">
+            <span class="field-label">Growth rate in retirement</span>
+            <span class="info-btn" onclick="toggleInfo('info-dgr')">i
+              <span class="info-bubble" id="info-dgr">How much your remaining pot continues to grow while you draw from it. Lower than pre-retirement as funds are typically moved to safer investments.<br><br>2% = cautious<br>4% = balanced</span>
+            </span>
+          </div>
+          <span class="field-value" id="lv-dgr">3%</span>
+        </div>
+        <input type="range" id="dgr" min="0" max="15" value="3" step="0.5" oninput="sync('dgr','lv-dgr','%');calc()">
+      </div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid #1a1a1a;font-size:12px;color:#555;line-height:1.5">State Pension not included — this shows your pension pot only. The full State Pension is currently £11,500/yr from age 67.</div>
+    </div>
+
+    <div class="result-cards">
+      <div class="rcard highlight">
+        <div class="rcard-label">Money runs out</div>
+        <div class="rcard-value" id="r-runout">Age 0</div>
+        <div class="rcard-sub" id="r-runout-sub">–</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-label">Years funded</div>
+        <div class="rcard-value" id="r-retyears">0 yrs</div>
+        <div class="rcard-sub" id="r-retyears-sub">–</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-label">Starting pot</div>
+        <div class="rcard-value" id="r-startpot">£0</div>
+        <div class="rcard-sub" id="r-startpot-sub">at retirement</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-label">Monthly income</div>
+        <div class="rcard-value" id="r-monthly">£0</div>
+        <div class="rcard-sub">from pension</div>
+      </div>
+    </div>
+
+    <div id="warning-div" class="warning" style="display:none">
+      ⚠️ Your pot runs out before age 90. Consider increasing contributions or reducing withdrawals.
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">DRAWDOWN CURVE</div>
+      <div style="position:relative;width:100%;height:220px" id="draw-container">
+        <canvas id="drawChart" role="img" aria-label="Pension pot drawdown over retirement years">Drawdown projection.</canvas>
+        <div class="chart-crosshair" id="draw-crosshair"></div>
+        <div class="chart-tooltip" id="draw-tooltip">
+          <div class="tt-age" id="dtt-age"></div>
+          <div class="tt-val" id="dtt-val"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <div class="insight-text" id="insight-text2">Adjust your settings to see your drawdown.</div>
+    </div>
+
+    <button class="phase-btn" onclick="showPhase(1)">← BACK TO BUILDING</button>
+
+    <div class="signup">
+      <div class="signup-eyebrow">WEALTH BRIEF UK</div>
+      <div class="signup-title">MORE TOOLS COMING SOON</div>
+      <div class="signup-sub">ISA calculator. Tax optimiser. Salary sacrifice modeller.<br>Be first to know when they drop.</div>
+      <div id="signup-form-wrap">
+        <form action="https://app.kit.com/forms/9314660/subscriptions" method="post" target="kit-frame" onsubmit="handleSignup()">
+          <div class="signup-row">
+            <input class="signup-input" type="email" name="email_address" id="email-input" placeholder="your@email.com" required>
+            <button class="signup-btn" type="submit">NOTIFY ME</button>
+          </div>
+        </form>
+        <iframe name="kit-frame" style="display:none"></iframe>
+        <div class="signup-success" id="signup-success">You're on the list. Watch this space.</div>
+        <div class="signup-disclaimer">No spam. Unsubscribe anytime.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+let growthC=null,drawC=null,projectedPot=0;
+let gLabels=[],gData=[],dLabels=[],dDataActive=[];
+
+function goToCalculator(phase){
+  document.getElementById('landing').style.display='none';
+  document.getElementById('calculator').style.display='block';
+  showPhase(phase);
+  window.scrollTo(0,0);
+}
+
+function goToLanding(){
+  document.getElementById('calculator').style.display='none';
+  document.getElementById('landing').style.display='block';
+  window.scrollTo(0,0);
+}
+
+function handleLandingSignup(){
+  const v=document.getElementById('landing-email-input').value;
+  if(!v||!v.includes('@'))return;
+  setTimeout(()=>{
+    document.getElementById('landing-signup-row').style.display='none';
+    document.getElementById('landing-signup-success').style.display='block';
+  },500);
+}
+
+function fmt(n){return '£'+Math.round(n).toLocaleString('en-GB')}
+function fmtK(n){if(n>=1000000)return '£'+(n/1000000).toFixed(2).replace(/\.?0+$/,'')+'m';if(n>=1000)return '£'+Math.round(n/1000)+'k';return fmt(n)}
+function sync(id,lbl,suf){document.getElementById(lbl).textContent=document.getElementById(id).value+suf}
+function syncCurrency(id,lbl){document.getElementById(lbl).textContent=fmt(document.getElementById(id).value)}
+
+function toggleInfo(id){
+  document.querySelectorAll('.info-bubble').forEach(b=>{if(b.id!==id)b.classList.remove('show')});
+  document.getElementById(id).classList.toggle('show');
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.info-btn'))document.querySelectorAll('.info-bubble').forEach(b=>b.classList.remove('show'));
+});
+
+function toggleCustomRet(){
+  const on=document.getElementById('custom-ret-toggle').checked;
+  document.getElementById('custom-ret-field').style.display=on?'block':'none';
+  document.getElementById('calculated-ret-display').style.display=on?'none':'block';
+  if(on){
+    const slider=document.getElementById('custret');
+    slider.value=document.getElementById('ret').value;
+    document.getElementById('lv-custret').textContent=slider.value;
+  }
+  calc();
+}
+
+function toggleCustomPot(){
+  const on=document.getElementById('custom-pot-toggle').checked;
+  document.getElementById('custom-pot-field').style.display=on?'block':'none';
+  document.getElementById('calculated-pot-display').style.display=on?'none':'block';
+  if(on){
+    const slider=document.getElementById('custpot');
+    const rounded=Math.round(projectedPot/5000)*5000;
+    slider.value=Math.min(Math.max(rounded,0),5000000);
+    document.getElementById('lv-custpot').textContent=fmtK(slider.value);
+  }
+  calc();
+}
+
+function showPhase(n){
+  document.getElementById('phase1').style.display=n===1?'block':'none';
+  document.getElementById('phase2').style.display=n===2?'block':'none';
+  document.getElementById('tab1').className='tab'+(n===1?' active':'');
+  document.getElementById('tab2').className='tab'+(n===2?' active':'');
+  if(n===2)calc();
+}
+
+function handleSignup(){
+  const v=document.getElementById('email-input').value;
+  if(!v||!v.includes('@'))return;
+  setTimeout(()=>{
+    document.querySelector('#signup-form-wrap form').style.display='none';
+    document.getElementById('signup-success').style.display='block';
+  },500);
+}
+
+function setupCrosshair(canvasId,containerId,crosshairId,tooltipId,ageId,valId,labelsRef,dataRef){
+  const container=document.getElementById(containerId);
+  const crosshair=document.getElementById(crosshairId);
+  const tooltip=document.getElementById(tooltipId);
+
+  function onMove(clientX){
+    const chart=canvasId==='growthChart'?growthC:drawC;
+    if(!chart)return;
+    const rect=container.getBoundingClientRect();
+    const x=clientX-rect.left;
+    const ca=chart.chartArea;
+    if(!ca)return;
+    const clampedX=Math.max(ca.left,Math.min(ca.right,x));
+    const pct=(clampedX-ca.left)/(ca.right-ca.left);
+    const idx=Math.round(pct*(labelsRef.length-1));
+    if(idx<0||idx>=labelsRef.length)return;
+    const xPx=ca.left+(idx/(labelsRef.length-1))*(ca.right-ca.left);
+    const chartTop=ca.top;
+    const chartH=ca.bottom-ca.top;
+    crosshair.style.left=xPx+'px';
+    crosshair.style.top=chartTop+'px';
+    crosshair.style.height=chartH+'px';
+    crosshair.style.opacity='1';
+    const val=dataRef[idx]||0;
+    document.getElementById(ageId).textContent='Age '+labelsRef[idx];
+    document.getElementById(valId).textContent=fmtK(val);
+    tooltip.style.opacity='1';
+    const ttW=tooltip.offsetWidth||80;
+    let ttLeft=xPx;
+    if(ttLeft-ttW/2<ca.left)ttLeft=ca.left+ttW/2;
+    if(ttLeft+ttW/2>ca.right)ttLeft=ca.right-ttW/2;
+    tooltip.style.left=ttLeft+'px';
+    tooltip.style.top=(chartTop-44)+'px';
+  }
+
+  function onLeave(){
+    crosshair.style.opacity='0';
+    tooltip.style.opacity='0';
+  }
+
+  container.addEventListener('mousemove',e=>onMove(e.clientX));
+  container.addEventListener('mouseleave',onLeave);
+  container.addEventListener('touchmove',e=>{e.preventDefault();onMove(e.touches[0].clientX)},{passive:false});
+  container.addEventListener('touchend',onLeave);
+}
+
+function calc(){
+  const age=+document.getElementById('age').value;
+  const ret=+document.getElementById('ret').value;
+  const sal=+document.getElementById('sal').value;
+  const sg=+document.getElementById('sg').value/100;
+  const pot0=+document.getElementById('pot').value;
+  const ec=+document.getElementById('ec').value/100;
+  const emp=+document.getElementById('emp').value/100;
+  const gr=+document.getElementById('gr').value/100;
+  const draw=+document.getElementById('draw').value;
+  const dgr=+document.getElementById('dgr').value/100;
+  const customOn=document.getElementById('custom-pot-toggle').checked;
+  const custpot=+document.getElementById('custpot').value;
+  const customRetOn=document.getElementById('custom-ret-toggle').checked;
+  const activeRet=customRetOn?+document.getElementById('custret').value:ret;
+  document.getElementById('r-projret').textContent=ret;
+  const yrs=Math.max(ret-age,0);
+
+  let potBase=pot0,totalContrib=0;
+  gLabels=[];gData=[];
+  for(let y=0;y<yrs;y++){
+    const s=sal*Math.pow(1+sg,y);
+    const c=(ec+emp)*s;
+    potBase=(potBase+c)*(1+gr);
+    totalContrib+=c;
+    if(y%Math.max(1,Math.floor(yrs/20))===0||y===yrs-1){
+      gLabels.push(age+y+1);
+      gData.push(Math.round(potBase));
+    }
+  }
+
+  projectedPot=potBase;
+  const activePot=customOn?custpot:potBase;
+  const monthlyCost=sal/12*ec;
+  const monthlyEmp=sal/12*emp;
+
+  document.getElementById('r-pot').textContent=fmtK(potBase);
+  document.getElementById('r-years').textContent=yrs+' year'+(yrs!==1?'s':'')+' growth';
+  document.getElementById('r-cost').textContent=fmt(monthlyCost)+'/mo';
+  document.getElementById('r-employer').textContent=fmt(monthlyEmp)+'/mo';
+  document.getElementById('r-contribs').textContent=fmtK(totalContrib);
+  document.getElementById('r-projpot').textContent=fmtK(potBase);
+  document.getElementById('insight-text1').innerHTML=
+    `You contribute <strong>${fmt(monthlyCost)}/month</strong> and your employer adds <strong>${fmt(monthlyEmp)}/month</strong>. `+
+    `Over <strong>${yrs} years</strong> at <strong>${document.getElementById('gr').value}%</strong> annual growth, your pot reaches <strong>${fmtK(potBase)}</strong>.`;
+
+  if(growthC){growthC.destroy();growthC=null;}
+  const gCtx=document.getElementById('growthChart').getContext('2d');
+  growthC=new Chart(gCtx,{
+    type:'line',
+    data:{labels:gLabels,datasets:[{label:'Pot',data:gData,borderColor:'#7B9BB5',backgroundColor:'rgba(123,155,181,0.08)',borderWidth:2,fill:true,tension:0.4,pointRadius:0}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{enabled:false}},
+      scales:{
+        x:{ticks:{color:'#444',font:{size:11},maxTicksLimit:8},grid:{color:'#1a1a1a'},border:{color:'#222'}},
+        y:{ticks:{color:'#444',font:{size:11},callback:v=>fmtK(v)},grid:{color:'#1a1a1a'},border:{color:'#222'}}
+      }
+    }
+  });
+
+  let dPot=activePot;
+  dLabels=[];
+  dDataActive=[];
+  let runoutAge=null;
+  for(let y=0;y<=50;y++){
+    const curAge=activeRet+y;
+    dLabels.push(curAge);
+    dDataActive.push(Math.max(Math.round(dPot),0));
+    if(dPot>0)dPot=(dPot-draw)*(1+dgr);else if(!runoutAge)runoutAge=curAge;
+  }
+
+  const displayRunout=runoutAge||'100+';
+  const retyrs=typeof displayRunout==='number'?displayRunout-activeRet:'50+';
+  const warning=typeof displayRunout==='number'&&displayRunout<90;
+
+  document.getElementById('r-runout').textContent='Age '+(typeof displayRunout==='number'?displayRunout:'100+');
+  document.getElementById('r-runout-sub').textContent=typeof displayRunout==='number'?'pot depleted':'still going strong';
+  document.getElementById('r-retyears').textContent=retyrs+(typeof retyrs==='number'?' yrs':'');
+  document.getElementById('r-retyears-sub').textContent='years of income';
+  document.getElementById('r-startpot').textContent=fmtK(activePot);
+  document.getElementById('r-startpot-sub').textContent=customOn?'your figure':'at retirement';
+  document.getElementById('r-monthly').textContent=fmt(draw/12)+'/mo';
+  document.getElementById('warning-div').style.display=warning?'block':'none';
+  document.getElementById('insight-text2').innerHTML=
+    `Drawing <strong>${fmt(draw)}/year</strong> from a <strong>${fmtK(activePot)}</strong> pot, your money ${typeof displayRunout==='number'?'runs out at age <strong>'+displayRunout+'</strong>':'lasts <strong>beyond age 100</strong>'}.`+
+    (warning?' Consider reducing withdrawals or increasing contributions.':'');
+
+  if(drawC){drawC.destroy();drawC=null;}
+  const dCtx=document.getElementById('drawChart').getContext('2d');
+  const dDatasets=[{label:'Pot value',data:dDataActive,borderColor:'#7B9BB5',backgroundColor:'rgba(123,155,181,0.08)',borderWidth:2,fill:true,tension:0.3,pointRadius:0}];
+  drawC=new Chart(dCtx,{
+    type:'line',data:{labels:dLabels,datasets:dDatasets},
+    options:{responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{enabled:false}},
+      scales:{
+        x:{ticks:{color:'#444',font:{size:11},maxTicksLimit:10},grid:{color:'#1a1a1a'},border:{color:'#222'}},
+        y:{ticks:{color:'#444',font:{size:11},callback:v=>v<0?'£0':fmtK(v)},grid:{color:'#1a1a1a'},border:{color:'#222'},min:0}
+      }
+    }
+  });
+}
+
+calc();
+setTimeout(()=>{
+  setupCrosshair('growthChart','growth-container','growth-crosshair','growth-tooltip','gtt-age','gtt-val',gLabels,gData);
+  setupCrosshair('drawChart','draw-container','draw-crosshair','draw-tooltip','dtt-age','dtt-val',dLabels,dDataActive);
+},300);
+</script>
+</body>
+</html>
