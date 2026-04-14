@@ -531,14 +531,20 @@ function handleSignup(){
   },500);
 }
 
-function setupCrosshair(canvasId,containerId,crosshairId,tooltipId,ageId,valId,labelsRef,dataRef){
+function setupCrosshair(canvasId,containerId,crosshairId,tooltipId,ageId,valId){
   const container=document.getElementById(containerId);
   const crosshair=document.getElementById(crosshairId);
   const tooltip=document.getElementById(tooltipId);
 
+  function getLabels(){return canvasId==='growthChart'?gLabels:dLabels;}
+  function getData(){return canvasId==='growthChart'?gData:dDataActive;}
+
   function onMove(clientX){
     const chart=canvasId==='growthChart'?growthC:drawC;
     if(!chart)return;
+    const labelsRef=getLabels();
+    const dataRef=getData();
+    if(!labelsRef.length)return;
     const rect=container.getBoundingClientRect();
     const x=clientX-rect.left;
     const ca=chart.chartArea;
@@ -683,8 +689,8 @@ function calc(){
 
 calc();
 setTimeout(()=>{
-  setupCrosshair('growthChart','growth-container','growth-crosshair','growth-tooltip','gtt-age','gtt-val',gLabels,gData);
-  setupCrosshair('drawChart','draw-container','draw-crosshair','draw-tooltip','dtt-age','dtt-val',dLabels,dDataActive);
+  setupCrosshair('growthChart','growth-container','growth-crosshair','growth-tooltip','gtt-age','gtt-val');
+  setupCrosshair('drawChart','draw-container','draw-crosshair','draw-tooltip','dtt-age','dtt-val');
 },300);
 </script>
 </body>
