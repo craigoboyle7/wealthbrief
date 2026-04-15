@@ -146,13 +146,14 @@ input:checked+.slider-t:before{transform:translateX(20px);background:#fff}
     <div class="landing-divider"></div>
 
     <div class="landing-signup">
-      <div class="landing-signup-title">MORE TOOLS COMING SOON</div>
-      <div class="landing-signup-sub">ISA calculator. Tax optimiser. Salary sacrifice modeller.<br>Be first to know when they drop.</div>
+      <div class="landing-signup-title">GET THE FREE GUIDE</div>
+      <div class="landing-signup-sub" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(16px,4vw,20px);color:#fff;margin-bottom:8px;letter-spacing:0.5px">A Beginner's Guide to Pensions</div>
+      <div class="landing-signup-sub">Everything you need to know about UK pensions, in plain English. Sign up to receive your free guide and be the first to hear about new tools and content.</div>
       <div id="landing-signup-row">
         <form action="https://app.kit.com/forms/9314660/subscriptions" method="post" target="kit-frame-landing" onsubmit="handleLandingSignup()">
           <div class="landing-signup-row">
             <input class="landing-signup-input" type="email" name="email_address" id="landing-email-input" placeholder="your@email.com" required>
-            <button class="landing-signup-btn" type="submit">NOTIFY ME</button>
+            <button class="landing-signup-btn" type="submit">SEND ME THE GUIDE</button>
           </div>
         </form>
         <iframe name="kit-frame-landing" style="display:none"></iframe>
@@ -251,6 +252,7 @@ input:checked+.slider-t:before{transform:translateX(20px);background:#fff}
           <input type="range" id="emp" min="0" max="20" value="3" step="0.5" oninput="sync('emp','lv-emp','%');calc()">
         </div>
       </div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid #1a1a1a;font-size:11px;color:#555;line-height:1.5">Assumes contributions increase by 2% per year in line with salary growth.</div>
     </div>
 
     <div class="section">
@@ -381,7 +383,7 @@ input:checked+.slider-t:before{transform:translateX(20px);background:#fff}
         </div>
         <input type="range" id="dgr" min="0" max="15" value="3" step="0.5" oninput="sync('dgr','lv-dgr','%');calc()">
       </div>
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid #1a1a1a;font-size:12px;color:#555;line-height:1.5">State Pension not included — this shows your pension pot only. The full State Pension is currently £11,500/yr from age 67.</div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid #1a1a1a;font-size:12px;color:#555;line-height:1.5">State Pension not included — this shows your pension pot only. The full State Pension is currently £12,547.60/yr from age 67 (2026/27).</div>
     </div>
 
     <div class="result-cards">
@@ -431,13 +433,14 @@ input:checked+.slider-t:before{transform:translateX(20px);background:#fff}
 
     <div class="signup">
       <div class="signup-eyebrow">WEALTH BRIEF UK</div>
-      <div class="signup-title">MORE TOOLS COMING SOON</div>
-      <div class="signup-sub">ISA calculator. Tax optimiser. Salary sacrifice modeller.<br>Be first to know when they drop.</div>
+      <div class="signup-title">GET THE FREE GUIDE</div>
+      <div class="signup-sub" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(16px,4vw,18px);color:#fff;margin-bottom:6px;letter-spacing:0.5px">A Beginner's Guide to Pensions</div>
+      <div class="signup-sub">Everything you need to know about UK pensions, in plain English. Sign up to receive your free guide and be the first to hear about new tools and content.</div>
       <div id="signup-form-wrap">
         <form action="https://app.kit.com/forms/9314660/subscriptions" method="post" target="kit-frame" onsubmit="handleSignup()">
           <div class="signup-row">
             <input class="signup-input" type="email" name="email_address" id="email-input" placeholder="your@email.com" required>
-            <button class="signup-btn" type="submit">NOTIFY ME</button>
+            <button class="signup-btn" type="submit">SEND ME THE GUIDE</button>
           </div>
         </form>
         <iframe name="kit-frame" style="display:none"></iframe>
@@ -601,11 +604,15 @@ function calc(){
   document.getElementById('r-projret').textContent=ret;
   const yrs=Math.max(ret-age,0);
 
+  const AUTO_GROWTH=0.02;
+
   let potBase=pot0,totalContrib=0;
   gLabels=[];gData=[];
   for(let y=0;y<yrs;y++){
     const s=sal*Math.pow(1+sg,y);
-    const c=(ec+emp)*s;
+    const effectiveEc=ec*Math.pow(1+AUTO_GROWTH,y);
+    const effectiveEmp=emp*Math.pow(1+AUTO_GROWTH,y);
+    const c=(effectiveEc+effectiveEmp)*s;
     potBase=(potBase+c)*(1+gr);
     totalContrib+=c;
     if(y%Math.max(1,Math.floor(yrs/20))===0||y===yrs-1){
@@ -648,7 +655,9 @@ function calc(){
   dLabels=[];
   dDataActive=[];
   let runoutAge=null;
-  for(let y=0;y<=50;y++){
+  const maxAge=100;
+  const drawYrs=Math.max(maxAge-activeRet,0);
+  for(let y=0;y<=drawYrs;y++){
     const curAge=activeRet+y;
     dLabels.push(curAge);
     dDataActive.push(Math.max(Math.round(dPot),0));
